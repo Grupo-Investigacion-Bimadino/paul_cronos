@@ -1,10 +1,7 @@
 <template>
   <div>
-    <Index />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
-
-<script setup>
-import Index from '~/pages/index.vue'; 
-// Ruta correcta al componente
-</script>

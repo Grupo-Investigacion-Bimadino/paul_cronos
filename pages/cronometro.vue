@@ -9,18 +9,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 
-const username = ref('');
+const username = ref("");
 const timer = ref(0);
 let timerInterval = null;
 
 onMounted(() => {
   // Verificar si el usuario está logueado
-  const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
   if (!loggedInUser) {
     // Si no hay usuario logueado, redirigir al login
-    window.location.href = '/'; // Redirige a la página de inicio de sesión
+    window.location.href = "/"; // Redirige a la página de inicio de sesión
   } else {
     username.value = loggedInUser.username; // Cargar el nombre del usuario
   }
@@ -34,7 +34,7 @@ const startTimer = () => {
 };
 
 const saveTime = () => {
-  localStorage.setItem('savedTime', timer.value);
+  localStorage.setItem("savedTime", timer.value);
   alert(`Tiempo guardado: ${timer.value} segundos`);
 };
 </script>

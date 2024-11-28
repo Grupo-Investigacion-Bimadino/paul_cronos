@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { nextTick } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const isLogin = ref(true);  // Controla si estamos en login o en registro
@@ -64,15 +64,6 @@ const identification = ref('');
 
 // Router
 const router = useRouter();
-
-// Comprobamos si ya hay un usuario logueado al cargar la página
-onMounted(() => {
-  const loggedInUser = localStorage.getItem('loggedInUser');
-  if (loggedInUser) {
-    isLoggedIn.value = true;
-    router.push('/cronometro'); // Si el usuario está logueado, lo redirigimos al cronómetro
-  }
-});
 
 // Función para alternar entre los formularios de login y registro
 const toggleForm = () => {
@@ -102,6 +93,19 @@ const register = () => {
 // Función para iniciar sesión
 const login = () => {
   const users = JSON.parse(localStorage.getItem('users')) || [];
+  
+  // Comprobar si es el administrador
+  if (username.value === "SebaS_19" && password.value === "123456789") {
+    const adminUser = { username: "SebaS_19", password: "123456789" };
+    localStorage.setItem('loggedInUser', JSON.stringify(adminUser));
+    isLoggedIn.value = true;
+
+    // Redirigir al panel de administración
+    router.push('/admin');
+    return;
+  }
+
+  // Verificar si es un usuario registrado
   const user = users.find(
     (u) => u.username === username.value && u.password === password.value
   );
@@ -109,8 +113,9 @@ const login = () => {
   if (user) {
     // Guardamos al usuario logueado en localStorage
     localStorage.setItem('loggedInUser', JSON.stringify(user));
+    isLoggedIn.value = true;
 
-    // Redirigimos al cronómetro (si el login es exitoso)
+    // Redirigir al cronómetro
     router.push('/cronometro');
   } else {
     alert('Usuario o contraseña incorrectos');
@@ -119,7 +124,6 @@ const login = () => {
 
 // Función para cerrar la interfaz
 const closeForm = () => {
-  isLoggedIn.value = false;
   router.push('/');  // Redirige a la página de inicio
 };
 </script>

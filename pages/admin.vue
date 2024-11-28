@@ -34,6 +34,17 @@ import { ref, onMounted } from "vue";
 
 const users = ref([]);
 
+// Función para formatear el tiempo en HH:mm:ss:ms
+const formatTime = (time) => {
+  if (time == null || isNaN(time)) return "N/A";
+  const milliseconds = time % 100;
+  const seconds = Math.floor((time / 100) % 60);
+  const minutes = Math.floor((time / 6000) % 60);
+  const hours = Math.floor(time / 360000);
+
+  return `${String(hours).padStart(2, "0")} : ${String(minutes).padStart(2, "0")} : ${String(seconds).padStart(2, "0")} : ${String(milliseconds).padStart(2, "0")}`;
+};
+
 onMounted(() => {
   const adminUser = JSON.parse(localStorage.getItem("loggedInUser"));
   if (!adminUser || adminUser.username !== "SebaS_19" || adminUser.password !== "123456789") {
@@ -47,7 +58,7 @@ onMounted(() => {
   users.value = registeredUsers.map(user => {
     return {
       ...user,
-      recordedTime: userTimes[user.username] || null
+      recordedTime: formatTime(userTimes[user.username]) // Formatear el tiempo guardado
     };
   });
 });
